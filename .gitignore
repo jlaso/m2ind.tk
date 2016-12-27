@@ -61,3 +61,7 @@ build-iPhoneSimulator/
 
 # Ignore Byebug command history file.
 .byebug_history
+
+# capistrano deploy
+config/deploy/*.rb
+config/deploy.rb
