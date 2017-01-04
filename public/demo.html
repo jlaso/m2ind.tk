@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Mastermind</title>
+    <link rel="icon" type="image/ico" href="favicon.ico?v=1">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <script src="cookies.js"></script>
+    <script src="m2indApi.js?v=2"></script>
+    <style>
+        .jumbotron .btn{
+            font-size: 14px !important;
+            padding: 5px 10px !important;
+        }
+        .try.bold{
+            font-weight: bold;
+            color: navy;
+        }
+    </style>
+</head>
+<body>
+<div class="container col-lg-6 col-lg-offset-3">
+    <div class="header clearfix">
+        <nav>
+            <ul class="nav nav-pills pull-right" id="tab-menu" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#top-ten" aria-controls="top-ten" role="tab" data-toggle="tab">Top 10</a>
+                </li>
+                <li role="presentation">
+                    <a href="#about" aria-controls="about" role="tab" data-toggle="tab">About</a>
+                </li>
+                <li role="presentation">
+                    <a href="#new-game" aria-controls="new-game" role="tab" data-toggle="tab">Play</a>
+                </li>
+            </ul>
+        </nav>
+        <a class="navbar-brand" rel="home" href="#" title="http://api.m2ind.tk">
+            <img style="max-width:80px; margin-top: -25px;" src="logo.png">
+        </a>
+        <h3 class="text-muted">Mastermind</h3>
+    </div>
+
+    <div class="tab-content">
+
+        <div role="tabpanel" class="tab-pane active" id="top-ten">
+            <div class="jumbotron">
+                <h1>Top 10</h1>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>User</th>
+                        <th>Points</th>
+                        <th>Lema</th>
+                    </tr>
+                    </thead>
+                    <tbody id="scores-table-body">
+
+                    </tbody>
+                </table>
+                <p><a class="btn btn-lg btn-success" href="#" id="start_new_game" role="button">Start new game</a></p>
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="about">
+            <div class="row marketing">
+                <div class="col-lg-6">
+                    <h4>Github</h4>
+                    <p>This little demo is a client of http://api.m2ind.tk, find more info <a href="https://github.com/jlaso/api.m2ind.tk">here</a></p>
+                </div>
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="new-game">
+            <div class="jumbotron">
+                <h2>Playing <span class="small" id="game_token"></span></h2>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Try #</th>
+                        <th>Guess</th>
+                        <th><i class="fa fa-info-circle" aria-hidden="true"></i></th>
+                        <th>Result</th>
+                        <th>Notes</th>
+                    </tr>
+                    </thead>
+                    <tbody id="game-table-body">
+
+                    </tbody>
+                </table>
+                <div class="clear">&nbsp;</div>
+                <div class="">
+                    <input type="text" name="guess" id="try" value="" placeholder="Your try?">
+                    <button class="btn btn-link" id="pre_validate_try">Pre-validate</button>
+                    <button class="btn btn-primary sm" id="new_try">Try</button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-danger btn-sm" id="ask_hint">Hint <span id="left_hints" class="badge"></span></button>
+                </div>
+                <div class="clear">&nbsp;</div>
+                <div>
+                    <span id="hint_0" class="label label-default" data-role="hint">0</span>
+                    <span id="hint_1" class="label label-default" data-role="hint">1</span>
+                    <span id="hint_2" class="label label-default" data-role="hint">2</span>
+                    <span id="hint_3" class="label label-default" data-role="hint">3</span>
+                    <span id="hint_4" class="label label-default" data-role="hint">4</span>
+                    <span id="hint_5" class="label label-default" data-role="hint">5</span>
+                    <span id="hint_6" class="label label-default" data-role="hint">6</span>
+                    <span id="hint_7" class="label label-default" data-role="hint">7</span>
+                    <span id="hint_8" class="label label-default" data-role="hint">8</span>
+                    <span id="hint_9" class="label label-default" data-role="hint">9</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2016 Joseluis Laso.</p>
+    </footer>
+
+</div> <!-- /container -->
+
+<div class="modal fade" id="you_win_dialog" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title btn btn-success">You win, congratulations !</h4>
+            </div>
+            <div class="modal-body">
+                <p id="modal_message">Do you want to record your name with the score ?</p>
+                <form class="form-inline" id="save_username">
+                    <div class="form-group">
+                        <label for="username">Name</label>
+                        <input type="text" class="form-control" id="username" placeholder="Your nickname">
+                    </div>
+                    <button type="submit" class="btn btn-default">Save</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="error_dialog" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title btn btn-danger">Error happened</h4>
+            </div>
+            <div class="modal-body">
+                <p id="error_message">&hellip;</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Understood</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+</body>
+
+<script type="text/template" id="score-row">
+    <tr>
+        <td>__RANK__</td>
+        <td>__USER__</td>
+        <td>__POINTS__</td>
+        <td>__LEMA__</td>
+    </tr>
+</script>
+
+<script type="text/template" id="game-row">
+    <tr data-role-try="__GUESS__">
+        <td>__TRY_NUM__</td>
+        <td>__GUESS_SPANNED__</span></td>
+        <td>
+            <i class="fa fa-check-circle okay" aria-hidden="true"></i>
+            <i class="fa fa-ban not_okay" aria-hidden="true"></i>
+        </td>
+        <td>__RESULT__</td>
+        <td><input type="text"/></td>
+    </tr>
+</script>
+
+<script type="text/javascript">
+
+    var numTry = 1;
+    var hints = [];
+    var hintsPos = [];
+    var serverApi = new M2indApi("http://mylocal.com:3000/");
+
+    $(function(){
+
+        $("#save_username").submit(function(e){
+            e.preventDefault();
+            var username = $("#username").val();
+            if(username){
+                serverApi.saveScoreUsername(username, function(data){
+                    if (data.success) {
+                        $("#you_win_dialog").modal("hide");
+                        serverApi.restartGame();
+                        getScores();
+                    }else{
+                        showErrorMessage(data.error ? data.error : "some error happened, try again")
+                    }
+                });
+            }
+            return false;
+        });
+
+        $("#ask_hint").click(function(){
+            serverApi.askForHint(function(data){
+                if(data.success){
+                    addHint(data.hint, { "hint": data.hint, "index": data.hint_pos});
+                    updateLeftHints(data.hints_left);
+                }else{
+                    showErrorMessage(data.error);
+                }
+            });
+        });
+
+        $("#new_try").click(function(){
+            var currentTry = $("#try").val();
+            if(currentTry){
+                serverApi.postNewTry(currentTry, function(data){
+                    if(!data.success) {
+                        showErrorMessage(data.error ? data.error : "some error happened");
+                    }else{
+                        var content = renderTemplate("#game-row", {
+                            try_num: numTry,
+                            guess_spanned: drawTry(data.try),
+                            guess: data.try,
+                            result: data.result
+                        });
+                        $("#game-table-body").append(content);
+                        hideTriesHelp();
+                        showHints();
+                        numTry++;
+                        if (data.you_win) {
+                            $("#you_win_dialog").modal();
+                        }
+                    }
+                });
+            }
+        });
+
+        $("#pre_validate_try").click(function(){
+            var currentTry = $("#try").val();
+            if(currentTry){
+                serverApi.preValidateTry(currentTry, function(data){
+                    if(!data.success){
+                        showErrorMessage(data.error);
+                    }else {
+                        data = data.data;
+                        hideTriesHelp();
+                        for (var i=0; i < data.length; i++) {
+                            var item = data[i];
+                            var okay = item.result && item.matches;
+                            var path = '[data-role-try="' + item.try + '"] .' + (okay ? "okay" : "not_okay");
+                            $(path).show();
+                        }
+                    }
+                });
+            }
+        });
+
+        $("#start_new_game").click(function(e){
+            $('#tab-menu a[href="#new-game"]').click()
+        });
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            if ("#new-game" == e.target.hash) {
+                $("#game-table-body").html("");
+                hints = [];
+                showHints();
+                $("#try").val("");
+                updateLeftHints("");
+                if (!serverApi.getGameToken()) {
+                    serverApi.startNewGame(function(data){
+                        if(data.success) {
+                            showGameToken();
+                            serverApi.getHints(function(data){
+                                if(data.success){
+                                    hints = data.hints;
+                                    hintsPos = data.hints_pos;
+                                    showHints();
+                                    updateLeftHints(data.hints_left);
+                                }else{
+                                    showErrorMessage(data.error);
+                                }
+                            });
+                        }else{
+                            showErrorMessage(data.error);
+                        }
+                    });
+                }else{
+                    showGameToken();
+                    serverApi.getTriesForGame(function(data){
+                        if(!data.success){
+                            showErrorMessage(data.error);
+                        }else {
+                            data = data.data;
+                            numTry = 1;
+                            for (var i = 0; i < data.length; i++) {
+                                item = data[i];
+                                var content = renderTemplate("#game-row", {
+                                    try_num: numTry,
+                                    guess_spanned: drawTry(item.try),
+                                    guess: item.try,
+                                    result: item.result
+                                });
+                                $("#game-table-body").append(content);
+                                numTry++;
+                            }
+                            hideTriesHelp();
+                        }
+                    });
+                    serverApi.getHints(function(data){
+                        if(data.success){
+                            hints = data.hints;
+                            hintsPos = data.hints_pos;
+                            showHints();
+                            updateLeftHints(data.hints_left);
+                        }else{
+                            showErrorMessage(data.error);
+                        }
+                    });
+                }
+            }
+        });
+
+        // behaviour for the tab navbar
+        $('#tab-menu a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+
+        // updates the top-10 scores table
+        getScores();
+
+        // check if the gameToken stored in cookies is already finished
+        serverApi.validateGameToken();
+    });
+
+    function getScores()
+    {
+        serverApi.getScores(function(data){
+            if(!data.success){
+                showErrorMessage(data.error);
+            }else {
+                $("#scores-table-body").html("");
+                var data = data.data;
+                for (var i = 0; i < data.length; i++) {
+                    item = data[i];
+                    var content = renderTemplate("#score-row", {
+                        rank: item.rank,
+                        user: item.user,
+                        points: item.points,
+                        lema: item.lema
+                    });
+                    $("#scores-table-body").append(content);
+                }
+            }
+        });
+    }
+
+    /**
+     * renders a template of type <script type="text/template" id="templateId">...
+     * @param templateId
+     * @param data
+     * Example {
+     *   "id": 1234,            // ==> in template should be __ID__
+     *   "name": "the name"     // in the template should be __NAME__
+     * }
+     */
+    function renderTemplate(templateId, data){
+        var html = $(templateId).html();
+        for(var i in data){
+            if(data.hasOwnProperty(i)){
+                var item = data[i];
+                html = html.replace(new RegExp("__"+i.toUpperCase()+"__", 'g'), item);
+            }
+        }
+        return html;
+    }
+
+    /**
+     * shows the gameToken in the span allowed for that
+     */
+    function showGameToken()
+    {
+        $("#game_token").html(serverApi.getGameToken());
+    }
+
+    function hideTriesHelp()
+    {
+        $(".okay").hide();
+        $(".not_okay").hide();
+    }
+
+    function showHints()
+    {
+        var i, pos, hint;
+        $('[data-role="hint"]').removeClass("label-success");
+        for(i = 0; i < hints.length; i++){
+            hint = hints[i];
+            $("#hint_"+hint).addClass("label-success");
+        }
+        $(".try.bold").removeClass("bold");
+        for(i = 0; i < hintsPos.length; i++){
+            pos = hintsPos[i];
+            $(".try_pos_"+pos.index+".try_val_"+pos.hint).addClass("bold");
+        }
+    }
+
+    function addHint(hint, pos)
+    {
+        if(-1 == hints.indexOf(hint)){
+            hints.push(hint);
+            hintsPos.push(pos);
+            showHints();
+        }
+    }
+
+    function updateLeftHints(leftHints)
+    {
+        $("#left_hints").html(""+leftHints);
+    }
+
+    function showErrorMessage(message)
+    {
+        $("#error_message").html(message);
+        $('#error_dialog').modal();
+    }
+
+    function drawTry(value)
+    {
+        var result = "";
+
+        for(var i=0; i<value.length; i++){
+            result += '<span class="try try_pos_'+i+' try_val_'+value[i]+'">'+value[i]+'</span>';
+        }
+
+        return result;
+    }
+
+</script>
+</html>
