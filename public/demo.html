@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Mastermind</title>
     <link rel="icon" type="image/ico" href="favicon.ico?v=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
@@ -85,7 +87,7 @@
                         <th>Guess</th>
                         <th><i class="fa fa-info-circle" aria-hidden="true"></i></th>
                         <th>Result</th>
-                        <th>Notes</th>
+                        <!-- <th>Notes</th> -->
                     </tr>
                     </thead>
                     <tbody id="game-table-body">
@@ -94,10 +96,10 @@
                 </table>
                 <div class="clear">&nbsp;</div>
                 <div class="">
-                    <input type="text" name="guess" id="try" value="" placeholder="Your try?">
-                    <button class="btn btn-link" id="pre_validate_try">Pre-validate</button>
+                    <input type="text" name="guess" id="try" size="6" value="" placeholder="Your try?">
+                    <button class="btn btn-link" id="pre_validate_try"><i class="fa fa-question"></i></button>
                     <button class="btn btn-primary sm" id="new_try">Try</button>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;
                     <button class="btn btn-danger btn-sm" id="ask_hint">Hint <span id="left_hints" class="badge"></span></button>
                 </div>
                 <div class="clear">&nbsp;</div>
@@ -169,23 +171,23 @@
 
 <script type="text/template" id="score-row">
     <tr>
-        <td>__RANK__</td>
+        <td class="text-center">__RANK__</td>
         <td>__USER__</td>
-        <td>__POINTS__</td>
+        <td class="text-right">__POINTS__</td>
         <td>__LEMA__</td>
     </tr>
 </script>
 
 <script type="text/template" id="game-row">
     <tr data-role-try="__GUESS__">
-        <td>__TRY_NUM__</td>
+        <td class="text-center">__TRY_NUM__</td>
         <td>__GUESS_SPANNED__</span></td>
         <td>
             <i class="fa fa-check-circle okay" aria-hidden="true"></i>
             <i class="fa fa-ban not_okay" aria-hidden="true"></i>
         </td>
         <td>__RESULT__</td>
-        <td><input type="text"/></td>
+        <!-- <td><input type="text"/></td> -->
     </tr>
 </script>
 
@@ -194,9 +196,16 @@
     var numTry = 1;
     var hints = [];
     var hintsPos = [];
-    var serverApi = new M2indApi(); //"http://mylocal.com:3000/");
+    var serverApi = new M2indApi("http://mylocal.com:3000/");
 
     $(function(){
+
+        setTimeout(function(){
+            if (serverApi.getGameToken()) {
+                $('#tab-menu a[href="#new-game"]').click();
+            }
+        },500);
+
 
         $("#save_username").submit(function(e){
             e.preventDefault();

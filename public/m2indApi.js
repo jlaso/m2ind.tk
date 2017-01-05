@@ -124,7 +124,7 @@ function M2indApi(server)
     this.saveScoreUsername = function(username, callback)
     {
         $.ajax({
-            method: "put",
+            method: "post",
             data: {
                 game_token: this.getGameToken(),
                 user: username
